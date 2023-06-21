@@ -1,0 +1,33 @@
+name: Workflow A
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Other build steps...
+
+      - name: Trigger Workflow B
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.PRAKASH_TOKEN }}
+          script: |
+            const { data: workflow } = await github.actions.getWorkflowRun({
+              owner: 'prakashveni1',
+              repo: 'workflow1',
+              run_id: ${{ github.run_id }}
+            });
+            await github.actions.createWorkflowDispatch({
+              owner: 'prakashveni1',
+              repo: 'workflow1',
+              workflow_id: workflow.workflow_id,
+              ref: 'main'
+            });
