@@ -3,7 +3,7 @@ name: Workflow B
 on:
   repository_dispatch:
     types:
-      - trigger-workflow-b
+      - trigger-workflow-B
 
 jobs:
   build:
