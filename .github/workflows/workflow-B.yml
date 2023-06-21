@@ -1,19 +1,21 @@
 name: Workflow B
 
 on:
-  workflow_dispatch:
-    inputs:
-      some-input:
-        description: 'Some input parameter'
-        required: true
+  workflow_run:
+    workflows: ["Workflow A"]
+    types:
+      - completed
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Step 1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Step 1 of Workflow B
         run: echo "Step 1 of Workflow B"
 
-      - name: Step 2
-        run: echo "Step 2 of Workflow B, Input: ${{ github.event.inputs.some-input }}"
+      - name: Step 2 of Workflow B
+        run: echo "Step 2 of Workflow B"
